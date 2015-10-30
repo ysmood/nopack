@@ -1,0 +1,23 @@
+{
+  "name": "nopack",
+  "version": "0.0.1",
+  "description": "A distributed compile utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "no test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysmood/nopack.git"
+  },
+  "keywords": [
+    "compiler",
+    "distribute"
+  ],
+  "author": "http://ysmood.org",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ysmood/nopack/issues"
+  },
+  "homepage": "https://github.com/ysmood/nopack#readme"
+}
