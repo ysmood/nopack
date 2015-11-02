@@ -19,5 +19,57 @@
   "bugs": {
     "url": "https://github.com/ysmood/nopack/issues"
   },
-  "homepage": "https://github.com/ysmood/nopack#readme"
+  "homepage": "https://github.com/ysmood/nopack#readme",
+  "dependencies": {
+    "babel-runtime": "5.8.29",
+    "commander": "2.9.0",
+    "nokit": "0.15.3",
+    "path-to-regexp": "1.2.1"
+  },
+  "devDependencies": {
+    "babel": "5.8.29",
+    "esprima": "2.7.0",
+    "babel-core": "5.8.33",
+    "babel-eslint": "4.1.3",
+    "eslint": "1.7.3",
+    "junit": "0.8.2"
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "rules": {
+      "indent": [
+        2,
+        4
+      ],
+      "quotes": [
+        2,
+        "double"
+      ],
+      "linebreak-style": [
+        2,
+        "unix"
+      ],
+      "semi": [
+        2,
+        "always"
+      ],
+      "no-trailing-spaces": 2,
+      "space-before-function-paren": [
+        2,
+        "always"
+      ],
+      "eqeqeq": [
+        2,
+        "allow-null"
+      ],
+      "no-console": [
+        0
+      ]
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "extends": "eslint:recommended"
+  }
 }
