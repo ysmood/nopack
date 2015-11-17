@@ -33,38 +33,31 @@ let killall = (pids) => pids.forEach(pid => spawn("kill", [pid]));
 
 export default async (it) => {
     await it.describe("baisc", async (it) => {
-        await it("simple compile js", async () => {
+        await it("simple compile js", async (after) => {
 
             let pids = await * [
                 startService("test/nopack.0.js"),
                 startService("test/nopack.1.js")
             ];
 
-            let url = "http://127.0.0.1:8070/";
-            let path = kit.path.resolve("test/fixtures/index.js");
+            after(() => killall(pids));
 
             let cmd = {
                 root: "127.0.0.1:8070",
-                path: path,
-                loaders: [
+                path: "test/fixtures/index.js",
+                compilers: [
                     {
                         ext: ".js",
-                        loader: kit.path.resolve("test/babel-loader.js")
+                        compiler: "nopack-babel"
                     }
                 ]
             };
 
-            try {
-                let res = await kit.request({
-                    url: url + "compile",
-                    reqData: JSON.stringify(cmd)
-                });
-                kit.logs("test result:", JSON.parse(res));
-            } catch (err) {
-                kit.err(err);
-            } finally {
-                killall(pids);
-            }
+            let res = await kit.request({
+                url: "http://127.0.0.1:8070/compile",
+                reqData: JSON.stringify(cmd)
+            });
+            kit.logs("test result:", JSON.parse(res));
         });
     });
 };

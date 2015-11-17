@@ -19,12 +19,12 @@ The `a` is the root the of the whole process. Every sub build process, such as `
 ## API
 
 
-### Loader
+### Compiler
 
-Each loader is a function:
+Each compiler is a function:
 
 ```js
-async function loader ({
+async function compiler ({
     // The transaction id of a build task.
     id: String,
 

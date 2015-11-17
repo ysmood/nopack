@@ -1,0 +1,19 @@
+{
+  "name": "nopack-babel",
+  "version": "1.0.0",
+  "description": "nopack-babel",
+  "main": "lib/parse-deps.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysmood/nopack.git"
+  },
+  "scripts": {
+    "test": "no test",
+    "prepublish": "babel -d lib src"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel": "5.8.29"
+  }
+}

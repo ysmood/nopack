@@ -9,10 +9,13 @@ export default async (cmd) => {
 
     cmd.src = await kit.request({
         url: `http://${cmd.root}/src`,
-        reqData: cmd.path
+        reqData: JSON.stringify({
+            dir: cmd.dir,
+            path: cmd.path
+        })
     });
 
-    let loader = require(_.find(cmd.loaders, { ext }).loader);
+    let compiler = require(_.find(cmd.compilers, { ext }).compiler);
 
-    return await loader(cmd);
+    return await compiler(cmd);
 };

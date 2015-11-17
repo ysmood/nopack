@@ -3,6 +3,7 @@ import compile from "./compile";
 
 let proxy = kit.require("proxy");
 let { _ } = kit;
+let regLocalMod = /^[\.\/\\]/;
 
 export default async (conf) => {
     let app = proxy.flow();
@@ -18,6 +19,7 @@ export default async (conf) => {
                 kit.logs("compiled:", cmd.path, res.deps);
 
                 res.depNodes = await * res.deps.map(async dep => {
+                    cmd.dir = kit.path.dirname(cmd.path);
                     cmd.path = dep;
                     let out = await kit.request({
                         url: `http://${_.sample(conf.nodes)}/compile`,
@@ -34,7 +36,20 @@ export default async (conf) => {
         }),
 
         proxy.select(proxy.match("/src"), $ => {
-            $.body = kit.readFile($.reqBody + "");
+            let cmd = JSON.parse($.reqBody + "");
+            let absPath;
+
+            let cwd = process.cwd();
+            process.chdir(cmd.dir || ".");
+
+            if (regLocalMod.test(cmd.path))
+                absPath = kit.path.resolve(cmd.path);
+            else
+                absPath = require.resolve(cmd.path);
+
+            process.chdir(cwd);
+
+            $.body = kit.createReadStream(absPath);
         })
     );
 
