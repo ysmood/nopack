@@ -2,6 +2,9 @@
 
 A distributed build program.
 
+Read the files in the `doc/` folder for more design details of this project.
+
+
 # Build Process
 
 Here's the dependency tree:
@@ -34,7 +37,10 @@ async function compiler ({
     // The path of the target relative to the project.
     path: String
 }) => {
+    // The compiled source.
     src: String | Buffer,
+
+    // The dependencies of this source.
     deps: [String]
 }
 ```
