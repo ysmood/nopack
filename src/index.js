@@ -1,60 +1,23 @@
 import kit from "nokit";
 import compile from "./compile";
+import tcenter from "./tcenter";
 
-let proxy = kit.require("proxy");
-let { _ } = kit;
-let regLocalMod = /^[\.\/\\]/;
+let { flow, select, match, body } = kit.require("proxy");
 
 export default async (conf) => {
-    let app = proxy.flow();
+    let app = flow();
 
     app.push(
-        proxy.body(),
+        body(),
 
-        proxy.select(proxy.match("/compile"), async $ => {
-            try {
-                let cmd = JSON.parse($.reqBody);
-                let res = await compile(cmd);
+        select(match("/compile"), compile(conf)),
 
-                kit.logs("compiled:", cmd.path, res.deps);
-
-                res.depNodes = await * res.deps.map(async dep => {
-                    cmd.dir = kit.path.dirname(cmd.path);
-                    cmd.path = dep;
-                    let out = await kit.request({
-                        url: `http://${_.sample(conf.nodes)}/compile`,
-                        reqData: JSON.stringify(cmd)
-                    });
-
-                    return JSON.parse(out);
-                });
-
-                $.body = res;
-            } catch (err) {
-                $.body = err.stack;
-            }
-        }),
-
-        proxy.select(proxy.match("/src"), $ => {
-            let cmd = JSON.parse($.reqBody + "");
-            let absPath;
-
-            let cwd = process.cwd();
-            process.chdir(cmd.dir || ".");
-
-            if (regLocalMod.test(cmd.path))
-                absPath = kit.path.resolve(cmd.path);
-            else
-                absPath = require.resolve(cmd.path);
-
-            process.chdir(cwd);
-
-            $.body = kit.createReadStream(absPath);
-        })
+        select(match("/tcenter"), tcenter(conf))
     );
 
     kit.logs("pid:", process.pid);
     kit.logs("nodes:", conf.nodes);
     kit.logs("listen:", conf.port);
+
     await app.listen(conf.port);
 };

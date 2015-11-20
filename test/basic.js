@@ -57,7 +57,7 @@ export default async (it) => {
                 url: "http://127.0.0.1:8070/compile",
                 reqData: JSON.stringify(cmd)
             });
-            kit.logs("test result:", JSON.parse(res));
+            kit.logs("test result:", res);
         });
     });
 };

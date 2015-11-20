@@ -22,12 +22,12 @@ The `a` is the root the of the whole process. Every sub build process, such as `
 ## API
 
 
-### Compiler
+### Middlewares
 
-Each compiler is a function:
+Each middleware is a function:
 
 ```js
-async function compiler ({
+async function middleware ({
     // The transaction id of a build task.
     id: String,
 
